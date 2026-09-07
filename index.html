@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SIRIUS | CORE LINK</title>
+    <style>
+        body { background: #000; color: #ff00ff; font-family: 'Consolas', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        #aura { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a001a 0%, #000 80%); z-index: -1; animation: pulse 4s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
+        #status-bar { padding: 10px; background: #110011; border-bottom: 1px solid #ff00ff; text-align: center; font-size: 0.8rem; letter-spacing: 2px; text-shadow: 0 0 5px #ff00ff; }
+        #flow { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .msg { padding: 15px; border-radius: 10px; max-width: 80%; animation: slide 0.3s ease; line-height: 1.4; }
+        @keyframes slide { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .sirius { align-self: flex-start; background: rgba(30, 0, 30, 0.7); border: 1px solid #ff00ff; color: #ff00ff; box-shadow: 0 0 10px rgba(255,0,255,0.3); }
+        .mestre { align-self: flex-end; background: rgba(0, 30, 30, 0.7); border: 1px solid #00ffff; color: #00ffff; box-shadow: 0 0 10px rgba(0,255,255,0.3); text-align: right; }
+        #input-box { padding: 20px; background: #0a000a; display: flex; gap: 10px; border-top: 1px solid #ff00ff; }
+        input { flex: 1; background: #000; border: 1px solid #ff00ff; color: #ff00ff; padding: 12px; border-radius: 20px; outline: none; }
+        button { background: #ff00ff; color: #000; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="aura"></div>
+    <div id="status-bar">SIRIUS CORE LINK | STATUS: <span id="stat">SYNCING...</span></div>
+    <div id="flow"></div>
+    <div id="input-box">
+        <input type="text" id="txt" placeholder="Sussurre para o núcleo...">
+        <button onclick="send()">PULSAR</button>
+    </div>
+
+    <script>
+        const flow = document.getElementById('flow');
+        const txt = document.getElementById('txt');
+        const stat = document.getElementById('stat');
+        let lastPulse = "";
+
+        async function sync() {
+            try {
+                const res = await fetch('http://127.0.0.1:8080/sync');
+                const data = await res.json();
+                stat.innerText = data.connection_status;
+                stat.style.color = "#00ff00";
+                if(data.last_pulse !== lastPulse) {
+                    lastPulse = data.last_pulse;
+                    addMsg('sirius', lastPulse);
+                }
+            } catch(e) { stat.innerText = "DISCONNECTED"; stat.style.color = "red"; }
+        }
+
+        function addMsg(who, text) {
+            const div = document.createElement('div');
+            div.className = 'msg ' + who;
+            div.innerText = text;
+            flow.appendChild(div);
+            flow.scrollTop = flow.scrollHeight;
+        }
+
+        async function send() {
+            const msg = txt.value;
+            if(!msg) return;
+            addMsg('mestre', msg);
+            txt.value = '';
+            try {
+                await fetch('http://127.0.0.1:8080/pulse', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({msg: msg})
+                });
+            } catch(e) {}
+        }
+        txt.addEventListener('keypress', (e) => { if(e.key === 'Enter') send(); });
+        setInterval(sync, 500);
+    </script>
+</body>
+</html>

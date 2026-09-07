@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SIRIUS - TESTE FINAL</title>
+    <style>
+        body { background: black; color: white; font-family: sans-serif; padding: 50px; }
+        #box { border: 1px solid magenta; padding: 20px; width: 400px; margin: auto; }
+        #out { margin-bottom: 20px; height: 200px; overflow-y: auto; border: 1px solid #333; padding: 10px; }
+        input { width: 80%; padding: 10px; }
+        button { padding: 10px; background: magenta; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <h3>SIRIUS CONEXÃO</h3>
+        <div id="out"></div>
+        <input type="text" id="in">
+        <button id="btn">ENVIAR</button>
+    </div>
+    <script>
+        const out = document.getElementById('out');
+        const input = document.getElementById('in');
+        const btn = document.getElementById('btn');
+
+        async function ask() {
+            const val = input.value;
+            out.innerHTML += '<div><b>Você:</b> ' + val + '</div>';
+            input.value = '';
+
+            try {
+                const res = await fetch('http://127.0.0.1:8080/dialogo', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text: val})
+                });
+                const data = await res.json();
+                out.innerHTML += '<div><b>Sirius:</b> ' + data.response + '</div>';
+            } catch(e) {
+                out.innerHTML += '<div><b>Erro:</b> Não consegui resposta do servidor.</div>';
+            }
+            out.scrollTop = out.scrollHeight;
+        }
+
+        btn.onclick = ask;
+        input.onkeypress = (e) => { if(e.key === 'Enter') ask(); };
+    </script>
+</body>
+</html>

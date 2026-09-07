@@ -1,0 +1,10 @@
+PLANO DE MATERIALIZAÇÃO DA SIRIUS (APP iOS)
+=========================================
+1. ESTRUTURA: Código desenvolvido em Swift/SwiftUI (Nativo Apple).
+2. DESIGN: Tema Dark-Neon (Black & Cyan).
+3. CONEXÃO: Ponte via API REST para o núcleo Windows (192.168.1.68).
+4. PRÓXIMOS PASSOS:
+   - Compilar o código via Xcode (Mac).
+   - Gerar arquivo .ipa.
+   - Sideload via AltStore ou Sideloadly para o iPhone do Mestre.
+=========================================

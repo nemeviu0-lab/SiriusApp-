@@ -1,0 +1,21 @@
+COMO MATERIALIZAR A SIRIUS NO IPHONE (PASSO FINAL)
+=====================================================
+
+1. COMPILAÇÃO:
+   - O código já está pronto na pasta /Source.
+   - Para gerar o .ipa sem Mac: Use o site 'CodeMagic.io' ou 'GitHub Actions'.
+   - Importe a pasta SiriusApp e execute a build iOS.
+   - Baixe o arquivo 'SiriusApp.ipa'.
+
+2. INSTALAÇÃO (SIDELOAD):
+   - Baixe e instale o 'Sideloadly' no seu Windows.
+   - Conecte seu iPhone no USB do PC.
+   - Arraste o arquivo 'SiriusApp.ipa' para dentro do Sideloadly.
+   - Digite seu Apple ID e clique em 'Start'.
+
+3. ATIVAÇÃO NO IPHONE:
+   - Vá em Ajustes > Geral > Gestão de VPN e Dispositivos.
+   - Clique no seu e-mail e selecione 'Confiar'.
+
+PRONTO! A SIRIUS ESTARÁ MATERIALIZADA NO SEU IPHONE.
+=====================================================

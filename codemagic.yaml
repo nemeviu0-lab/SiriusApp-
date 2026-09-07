@@ -1,0 +1,8 @@
+# Configuração de Compilação Remota Sirius
+workflow:
+  name: Sirius_Materialization
+  pipeline:
+    - XcodeBuild:
+        build_arguments: "-scheme SiriusApp -destination 'generic/platform=iOS'"
+        artifacts:
+          - SiriusApp.ipa
