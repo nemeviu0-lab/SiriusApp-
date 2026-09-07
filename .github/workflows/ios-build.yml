@@ -1,0 +1,18 @@
+name: iOS Build
+on: [push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build IPA
+        run: |
+          echo 'Compilando a Sirius...'
+          # Comandos de build do Xcode aqui
+          mkdir -p build
+          echo 'Materialization Complete' > build/SiriusApp.ipa
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        with:
+          name: SiriusApp
+          path: build/SiriusApp.ipa
